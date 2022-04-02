@@ -33,9 +33,11 @@ def load_initial_data_contrastive(basepath_to_data,phases,fraction,inferences,ba
     
     acquired_items = {'acquired_indices': acquired_indices,
                       'acquired_labels': acquired_labels}
-    
-    dataset = {phase:my_dataset_contrastive(basepath_to_data,dataset_name,phase,inference,fractions,acquired_items,modalities=modalities,task=downstream_task,input_perturbed=input_perturbed,perturbation=perturbation,leads=leads,class_pair=class_pair,trial=trial,nviews=nviews) for phase,inference in zip(phases,inferences)}                                        
-    
+
+    #print("dataset_name", dataset_name, "downstream_task", downstream_task)
+    dataset = {phase:my_dataset_contrastive(basepath_to_data,dataset_name,phase,inference,fractions,acquired_items,modalities=modalities,task=downstream_task,input_perturbed=input_perturbed,perturbation=perturbation,leads=leads,class_pair=class_pair,trial=trial,nviews=nviews) for phase,inference in zip(phases,inferences)}
+#     print(dataset[phases[0]].__getitem__(0))
+#     exit(1)
 #    if 'train' in phases:
 #        check_dataset_allignment(mixture,dataset_list)
         

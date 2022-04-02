@@ -1,0 +1,20 @@
+Epoch 352/399
+----------
+100%|██████████████████████████████████████████████████████████████████████████| 282/282 [01:59<00:00,  2.37it/s]
+  train1-loss
+-------------
+         3.11
+100%|████████████████████████████████████████████████████████████████████████████| 71/71 [00:22<00:00,  3.17it/s]
+  val-loss
+----------
+    2.8734
+Traceback (most recent call last):
+  File "/Users/ziyuanzhao/Documents/CLOCS_original/run_experiments.py", line 158, in <module>
+    run_configurations(basepath_to_data,phases,trial_to_load_list,trial_to_run_list,embedding_dim_list,downstream_dataset_list,second_dataset_list,labelled_fraction_list)
+  File "/Users/ziyuanzhao/Documents/CLOCS_original/run_experiments.py", line 129, in run_configurations
+    save_path_dir, seed = make_saving_directory_contrastive(phases,downstream_dataset,trial_to_load,trial_to_run,seed,max_seed,downstream_task,embedding_dim,original_leads,input_perturbed,perturbation)
+  File "/Users/ziyuanzhao/Documents/CLOCS_original/prepare_miscellaneous.py", line 347, in make_saving_directory_contrastive
+    save_path_dir, seed = make_dir(save_path_dir,max_seed,task,trial_to_run,evaluation=evaluation)
+  File "/Users/ziyuanzhao/Documents/CLOCS_original/prepare_miscellaneous.py", line 357, in make_dir
+    seed_index = np.where(['seed' in token for token in split_save_path_dir])[0].item()
+ValueError: can only convert an array of size 1 to a Python scalar

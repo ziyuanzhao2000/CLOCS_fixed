@@ -48,7 +48,6 @@ def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,clas
     acquired_labels = dict() #network labels of the unlabelled data
     
     dataloader,operations = load_initial_data_contrastive(basepath_to_data,phases,fraction,inferences,batch_size,modalities,acquired_indices,acquired_labels,modalities,downstream_dataset,downstream_task=downstream_task,input_perturbed=input_perturbed,perturbation=perturbation,leads=leads,class_pair=class_pair,trial=trial_to_run,nviews=nviews,labelled_fraction=labelled_fraction)
-
     """ Obtain Number of Labelled Samples """
     #total_labelled_samples = len(dataloaders_list['train1'].batch_sampler.sampler.data_source.label_array)
     

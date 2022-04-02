@@ -98,8 +98,10 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
         labels = change_labels_type(labels,criterion)
         with torch.set_grad_enabled('train1' in phase):# and inference == False): #('train' in phase and inference == False)
             outputs = model(inputs)
+#             print("after the first pass", outputs, labels)
+#             exit(1)
             loss = criterion(outputs,labels)
-        
+
         """ Backpropagation and Update Step """
         if phase == 'train1': #only perform backprop for train1 phase           
             loss.backward()

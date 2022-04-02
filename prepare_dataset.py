@@ -60,7 +60,7 @@ class my_dataset_contrastive(Dataset):
         self.input_perturbed = input_perturbed
         self.perturbation = perturbation
 #        self.name = '-'.join((dataset_name,modalities[0],str(fraction),leads,class_pair)) #name for different tasks
-        
+
         if task == 'self-supervised':
             for modality in modalities:
                 if phase == 'train':
@@ -83,7 +83,6 @@ class my_dataset_contrastive(Dataset):
                 inputs, outputs, pids = self.retrieve_multi_task_train_data()
             else:
                 inputs, outputs, pids = self.retrieve_multi_task_val_data(phase)
-            
             keep_indices = list(np.arange(inputs.shape[0])) #filler
             modality_array = list(np.arange(inputs.shape[0])) #filler
             dataset_list = ['All' for _ in range(len(keep_indices))] #filler
@@ -94,6 +93,7 @@ class my_dataset_contrastive(Dataset):
             self.modality_array = modality_array
             self.remaining_indices = keep_indices
             self.pids = pids
+
         else: #normal training path for CPPC, CMC, etc. 
             self.name = '-'.join((dataset_name,modalities[0],str(fraction),leads,class_pair)) #name for different tasks
             if phase == 'train':
@@ -186,17 +186,17 @@ class my_dataset_contrastive(Dataset):
         
         if self.cl_scenario == 'Class-IL':
             dataset_name = dataset_name + '_' + 'mutually_exclusive_classes'
-        
-        """ Dict Containing Actual Frames """
+        """ Dict Containing Actual Frames """ # damn!!! it's a dict, not array
         with open(os.path.join(path,'frames_phases_%s%s.pkl' % (extension,dataset_name)),'rb') as f:
+            print(os.path.join(path,'frames_phases_%s%s.pkl' % (extension,dataset_name)),'rb')
             input_array = pickle.load(f)
+#             print(input_array['ecg'][1]['train']['labelled'].shape)
         """ Dict Containing Actual Labels """
         with open(os.path.join(path,'labels_phases_%s%s.pkl' % (extension,dataset_name)),'rb') as g:
             output_array = pickle.load(g)
         """ Dict Containing Patient Numbers """
         with open(os.path.join(path,'pid_phases_%s%s.pkl' % (extension,dataset_name)),'rb') as h:
             pid_array = pickle.load(h) #needed for CPPC (ours)
-        
         return input_array,output_array,pid_array
 
     def offset_outputs(self,dataset_name,outputs,t=0): #t tells you which class pair you are on now (used rarely and only for MTL)
@@ -241,7 +241,7 @@ class my_dataset_contrastive(Dataset):
             elif self.cl_scenario == 'Time-IL':
                 self.class_pair = task_name.split('-')[-1] 
             elif self.cl_scenario == 'Task-IL' and 'chapman' in dataset: #chapman ecg as task in Task-IL setting
-                self.class_pair = task_name.split('-')[-1] 
+                self.class_pair = task_name.split('-')[-1]
             input_array,output_array = self.load_raw_inputs_and_outputs(dataset,leads)
             input_array,output_array = self.retrieve_labelled_data(input_array,output_array,fraction,labelled_fraction,dataset_name=dataset)
             """ Offset Applied to Each Dataset """
@@ -315,7 +315,6 @@ class my_dataset_contrastive(Dataset):
         pids = np.concatenate(pids)
         
         inputs,outputs,pids,_ = self.shrink_data(inputs,outputs,pids,labelled_fraction)
-        
         return inputs,outputs,pids          
     
     def shrink_data(self,inputs,outputs,pids,fraction,modality_array=None):
@@ -381,6 +380,7 @@ class my_dataset_contrastive(Dataset):
         """ Obtain Modality-Combined Labelled Dataset """
         for modality in self.modalities:
             modality_input = input_array[modality][fraction][phase][header]
+            print("modality input shape:", modality_input.shape)
             modality_output = output_array[modality][fraction][phase][header]
             modality_pids = pid_array[modality][fraction][phase][header]
             frame_array.append(modality_input)
@@ -390,9 +390,14 @@ class my_dataset_contrastive(Dataset):
         inputs = np.concatenate(frame_array)
         outputs = np.concatenate(label_array)
         pids = np.concatenate(pids)
-        
+        print(inputs.shape, outputs.shape, pids.shape)
+        print(outputs)
+        print(inputs[0], outputs[0], pids[0])
+#         exit(1)
         inputs,outputs,pids,_ = self.shrink_data(inputs,outputs,pids,labelled_fraction)
-
+        print(inputs.shape, outputs.shape, pids.shape)
+        print(outputs)
+        print(inputs[0], outputs[0], pids[0])
         return inputs,outputs,pids
 
     def acquire_unlabelled_samples(self,inputs,outputs,fraction,unlabelled_fraction,acquired_indices):
@@ -596,6 +601,10 @@ class my_dataset_contrastive(Dataset):
             label = torch.tensor(label,dtype=torch.float)
             frame = frame.unsqueeze(0) #(1,5000)
             frame_views = frame.unsqueeze(2) #to show that there is only 1 view (1x2500x1)
+
+        if isinstance(pid, np.ndarray):
+            pid = pid[0]
+        #print("get item returns:", frame_views,label,pid,modality,dataset,true_index)
 
         return frame_views,label,pid,modality,dataset,true_index
         
