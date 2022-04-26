@@ -17,7 +17,7 @@ import random
 #import pandas as pd
 #%%
 
-window_len = 178
+window_len = 178 // 2
 
 class my_dataset_contrastive(Dataset):
     """ Takes Arrays and Phase, and Returns Sample 
@@ -546,7 +546,6 @@ class my_dataset_contrastive(Dataset):
             input_frame = np.array(input_frame,dtype=float)
         
         nsamples = input_frame.shape[0] #(5000,) for my approach, #2500 for CMC approach (OURS1)
-        
         if self.trial == 'CMSC':
             """ Start My Approach Patient Specific """
             frame = torch.tensor(input_frame,dtype=torch.float)
@@ -561,7 +560,6 @@ class my_dataset_contrastive(Dataset):
                 frame_views[0,:,n] = current_view
                 start += window_len
             """ End My Approach Patient Specific """
-            
         elif self.trial == 'CMLC': #contrastive multi-lead coding (OURS2)
             frame = torch.tensor(input_frame,dtype=torch.float)
             label = torch.tensor(label,dtype=torch.float)
@@ -573,7 +571,6 @@ class my_dataset_contrastive(Dataset):
                 current_view = self.obtain_perturbed_frame(current_view)
                 current_view = self.normalize_frame(current_view)
                 frame_views[0,:,n] = current_view
-                
         elif self.trial == 'CMSMLC': #contrastive multi-segment multi-lead coding (OURS3)
             frame = torch.tensor(input_frame,dtype=torch.float)
             label = torch.tensor(label,dtype=torch.float)
@@ -589,7 +586,6 @@ class my_dataset_contrastive(Dataset):
                     current_view = self.normalize_frame(current_view)
                     frame_views[0,:,fcount] = current_view  
                     fcount += 1
-                    
         elif self.trial in ['CMC','SimCLR']:
             frame_views = torch.empty(1,nsamples,self.nviews)
             for n in range(self.nviews):
@@ -603,14 +599,12 @@ class my_dataset_contrastive(Dataset):
                 frame = frame.unsqueeze(0)
                 """ Populate Frame Views """
                 frame_views[0,:,n] = frame
-                
         elif self.trial in ['Linear','Fine-Tuning','Random']:
             frame = self.normalize_frame(input_frame)
             frame = torch.tensor(frame,dtype=torch.float)
             label = torch.tensor(label,dtype=torch.float)
             frame = frame.unsqueeze(0) #(1,5000)
             frame_views = frame.unsqueeze(2) #to show that there is only 1 view (1x2500x1)
-
         if isinstance(pid, np.ndarray):
             pid = pid[0]
         #print("get item returns:", frame_views,label,pid,modality,dataset,true_index)

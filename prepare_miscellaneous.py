@@ -55,8 +55,8 @@ def obtain_contrastive_loss(latent_embeddings,pids,trial):
     if trial in ['CMSC','CMLC','CMSMLC']:
         pids = np.array(pids,dtype=np.object)   
         pid1,pid2 = np.meshgrid(pids,pids)
-        pid_matrix = pid1 + '-' + pid2
-        pids_of_interest = np.unique(pids + '-' + pids) #unique combinations of pids of interest i.e. matching
+        pid_matrix = str(pid1) + '-' + str(pid2)
+        pids_of_interest = np.unique(str(pid1) + '-' + str(pid2)) #unique combinations of pids of interest i.e. matching
         bool_matrix_of_interest = np.zeros((len(pids),len(pids)))
         for pid in pids_of_interest:
             bool_matrix_of_interest += pid_matrix == pid

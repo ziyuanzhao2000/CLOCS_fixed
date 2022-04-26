@@ -21,8 +21,12 @@ c1 = 1 #b/c single time-series
 c2 = 4 #4
 c3 = 16 #16
 c4 = 32 #32
-k=7 #kernel size #7 
-s=3 #stride #3
+k1=7 #kernel size #7 for default
+k2=3
+k3=2
+s1=2 #stride #3 for default
+s2=2
+s3=2
 #num_classes = 3
 
 class cnn_network_contrastive(nn.Module):
@@ -53,23 +57,23 @@ class cnn_network_contrastive(nn.Module):
         self.view_linear_modules = nn.ModuleList()
         for n in range(nencoders):
             self.view_modules.append(nn.Sequential(
-            nn.Conv1d(c1,c2,k,s),
+            nn.Conv1d(c1,c2,k1,s1),
             nn.BatchNorm1d(c2),
             nn.ReLU(),
             nn.MaxPool1d(2),
             self.dropout1,
-            nn.Conv1d(c2,c3,k,s),
+            nn.Conv1d(c2,c3,k2,s2),
             nn.BatchNorm1d(c3),
             nn.ReLU(),
             nn.MaxPool1d(2),
             self.dropout2,
-            nn.Conv1d(c3,c4,k,s),
+            nn.Conv1d(c3,c4,k3,s3),
             nn.BatchNorm1d(c4),
             nn.ReLU(),
             nn.MaxPool1d(2),
             self.dropout3
             ))
-            self.view_linear_modules.append(nn.Linear(c4*10,self.embedding_dim))
+            self.view_linear_modules.append(nn.Linear(32,self.embedding_dim)) # c4*10
                         
     def forward(self,x):
         """ Forward Pass on Batch of Inputs 
