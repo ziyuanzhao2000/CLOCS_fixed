@@ -96,6 +96,8 @@ fraction_list = [1]
 leads = ['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6']
 # desired_leads = ['II','V2','aVL','aVR'] #['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6']
 desired_leads = leads
+
+# modality -> fraction -> phase -> term
 inputs_dict = dict()
 outputs_dict = dict()
 pids = dict()
@@ -142,7 +144,10 @@ for modality in modality_list:
 
                 inputs_dict[modality][fraction][phase][term] = np.array(current_inputs)
                 outputs_dict[modality][fraction][phase][term] = np.array(current_outputs)
+
                 pids[modality][fraction][phase][term] = np.array(current_pids)
+                print(np.array(pids[modality][fraction][phase][term]).shape)
+                exit(1)
                 print("during parsing, input has shape", inputs_dict[modality][fraction][phase][term].shape)
                 print("current pids have shape", pids[modality][fraction][phase][term].shape)
     print("after initial preprocessing", inputs_dict['ecg'][1]['train']['All Terms'].shape)
@@ -189,7 +194,7 @@ def save_final_frames_and_labels(frames_dict,labels_dict,path,dataset):
         pickle.dump(pids,h)
     print('Final Frames Saved!')
 
-savepath = os.path.join(basepath,trial,'leads_%s' % str(desired_leads))
+savepath = os.path.join(basepath, trial,'leads_%s' % str(desired_leads))
 if os.path.isdir(savepath) == False:
     os.makedirs(savepath)
 

@@ -206,7 +206,7 @@ def save_metrics(save_path_dir,prefix,metrics_dict):
 def track_metrics(metrics_dict,results_dictionary,phase,epoch_count):
     for metric_name,results in results_dictionary.items():
         
-        if epoch_count == 0 and ('train' in phase or 'test' in phase):
+        if epoch_count == 0 and ('train' in phase): #or 'test' in phase):
             metrics_dict[metric_name] = dict()
         
         if epoch_count == 0:
@@ -252,6 +252,12 @@ def determine_classification_setting(dataset_name,trial):
     elif dataset_name == 'chapman':
         classification = '4-way'
     elif dataset_name == 'chapman_pvc':
+        classification = '2-way'
+    elif dataset_name == 'emg':
+        classification = '3-way'
+    elif dataset_name == 'sleepEDF':
+        classification = '5-way'
+    elif dataset_name == 'epilepsy':
         classification = '2-way'
     else: #used for pretraining with contrastive learning
         classification = None
@@ -364,7 +370,6 @@ def make_dir(save_path_dir,max_seed,task,trial_to_run,second_pass=False,evaluati
         
         if condition:# and trial_to_run not in ['Linear','Fine-Tuning']: #do not skip if you need to do finetuning
             os.chdir(save_path_dir)
-
             if 'train_val_metrics_dict' in os.listdir() and evaluation == False:
                 if current_seed < max_seed-1:
                     print('Skipping Seed!')
@@ -394,7 +399,13 @@ def obtain_information(trial,downstream_dataset,second_dataset,data2leads_dict,d
     batch_size = data2bs_dict[training_dataset]
     held_out_lr = data2lr_dict[training_dataset]
     class_pair = data2classpair_dict[training_dataset]
-    modalities = ['ecg']
+
+    if second_dataset == 'emg':
+        modalities = ['emg']
+    elif second_dataset in ['sleepEDF', 'epilepsy']:
+        modalities = ['eeg']
+    else:
+        modalities = ['ecg']
     fraction = 1 #1 for chapman, physio2020, and physio2017. Use labelled_fraction for control over fraction of training data used 
     return leads, batch_size, held_out_lr, class_pair, modalities, fraction       
 

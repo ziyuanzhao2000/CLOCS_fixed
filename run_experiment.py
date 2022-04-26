@@ -19,16 +19,21 @@ from perform_training import one_epoch_finetuning, one_epoch_contrastive
 """
 #%%
 
-def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,classification,load_path_dir,save_path_dir,seed,batch_size,held_out_lr,fraction,modalities,leads,saved_weights,phases,downstream_dataset,downstream_task,class_pair,input_perturbed,perturbation,trial_to_load=None,trial_to_run=None,nencoders=1,embedding_dim=256,nviews=1,labelled_fraction=1,num_epochs=250):
+def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,classification,load_path_dir,save_path_dir,
+                seed,batch_size,held_out_lr,fraction,modalities,leads,saved_weights,phases,downstream_dataset,
+                downstream_task,class_pair,input_perturbed,perturbation,trial_to_load=None,trial_to_run=None,
+                nencoders=1,embedding_dim=256,nviews=1,labelled_fraction=1,num_epochs=250):
     """ Training and Validation For All Epochs """
     best_loss = float('inf')
     metrics_dict = dict()
     patient_rep_dict = dict()
+    if phases[0] == 'train':
+        phases[0] = 'train1'  # Another hack because I don't understand the distinction b/w train and train1
     if 'test' not in phases:
         phases = ['train1','val']
         inferences = [False,False]
     else:
-        inferences = [False]
+        inferences = [False] * len(phases)
     
     stop_counter = 0
     patience = 15 #for early stopping criterion
@@ -36,7 +41,7 @@ def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,clas
     
     """ Added April 24th, 2020 """
     criterion = obtain_criterion(classification)
-    if 'train1' in phases:
+    if 'train1' in phases or 'train' in phases:
         model_path_dir = load_path_dir #original use-case
     elif 'test' in phases:
         model_path_dir = save_path_dir
@@ -46,7 +51,6 @@ def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,clas
     weighted_sampling = []
     acquired_indices = [] #indices of the unlabelled data
     acquired_labels = dict() #network labels of the unlabelled data
-    
     dataloader,operations = load_initial_data_contrastive(basepath_to_data,phases,fraction,inferences,batch_size,modalities,acquired_indices,acquired_labels,modalities,downstream_dataset,downstream_task=downstream_task,input_perturbed=input_perturbed,perturbation=perturbation,leads=leads,class_pair=class_pair,trial=trial_to_run,nviews=nviews,labelled_fraction=labelled_fraction)
     """ Obtain Number of Labelled Samples """
     #total_labelled_samples = len(dataloaders_list['train1'].batch_sampler.sampler.data_source.label_array)
@@ -59,7 +63,7 @@ def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,clas
                             
         """ ACTUAL TRAINING AND EVALUATION """
         for phase,inference in zip(phases,inferences):
-            if 'train1' in phase:
+            if 'train1' in phase or 'train' in phase:
                 model.train()
             elif phase == 'val' or phase == 'test':
                 model.eval()
@@ -80,11 +84,11 @@ def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,clas
             if inference == False:
                 print_metrics(phase,results_dictionary)
                 epoch_loss = results_dictionary['epoch_loss']
-                if phase == 'val' and epoch_loss < best_loss or phase == 'test' and epoch_loss < best_loss:
+                if (phase == 'val' and epoch_loss < best_loss) or (phase == 'test' and epoch_loss < best_loss):
                     best_loss = epoch_loss
                     best_model_wts = copy.deepcopy(model.state_dict())
                     """ Save Best Finetuned Weights """
-                    if 'train1' in phases:
+                    if 'train1' in phases or 'train' in phases:
                         save_config_weights(save_path_dir,best_model_wts,saved_weights,phases,trial_to_run,downstream_dataset)
                         save_patient_representation(save_path_dir,patient_rep_dict,trial_to_run)
                     stop_counter = 0
@@ -92,15 +96,15 @@ def train_model(basepath_to_data,cnn_network_contrastive,second_cnn_network,clas
                     stop_counter += 1
                 
                 metrics_dict = track_metrics(metrics_dict,results_dictionary,phase,epoch_count)                
-
+#                 print(metrics_dict)
         epoch_count += 1
-        if 'train1' not in phases:
+        if 'train1' not in phases and 'train' not in phases:
             break #from while loop
-        elif 'train1' in phases and 'obtain_representation' in downstream_task:
+        elif ('train1' in phases or 'train' in phases) and 'obtain_representation' in downstream_task:
             break
             
     #print('Best Val Loss: %.4f.' % best_loss)
-    if 'train1' in phases:
+    if 'train1' in phases or 'train' in phases:
         prefix = 'train_val'
         save_metrics(save_path_dir,prefix,metrics_dict)
         model.load_state_dict(best_model_wts)

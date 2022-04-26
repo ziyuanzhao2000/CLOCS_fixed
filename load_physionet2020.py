@@ -114,7 +114,8 @@ def makepath_and_save_data(inputs,outputs,leads_of_interest,trial=''):
         pickle.dump(outputs,f)
     print('Saved!')
 #%%
-leads_of_interest = [['I','II','III','aVL','aVR','aVF','V1','V2','V3','V4','V5','V6']] #[['II','V2','aVL','aVR']] #[['I','II','III','aVL','aVR','aVF','V1','V2','V3','V4','V5','V6']] #list of lists regardless of number of leads
+##leads_of_interest = [['I','II','III','aVL','aVR','aVF','V1','V2','V3','V4','V5','V6']] #[['II','V2','aVL','aVR']] #[['I','II','III','aVL','aVR','aVF','V1','V2','V3','V4','V5','V6']] #list of lists regardless of number of leads
+leads_of_interest = [['I']]
 trials = ['constrastive_ss','contrastive_ms','contrastive_ml','contrastive_msml'] # 'contrastive_ms' | 'contrastive_ml' | 'contrastive_msml' | 'contrastive_ss' | '' #default
 for trial in trials:
     for leads in leads_of_interest:

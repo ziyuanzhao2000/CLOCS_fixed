@@ -103,6 +103,9 @@ def determine_classification_setting(dataset_name):
         classification = '2-way'
     elif dataset_name == 'physionet2020':
         classification = '9-way' #because binary multilabel
+    elif dataset_name == 'emg':
+        classification = '3-way'
+    elif dataset_name == 's':
 
     return classification
 

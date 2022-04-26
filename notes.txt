@@ -1,0 +1,8 @@
+1. Extending CLOCS to fine tune on new datasets, the following need to be modified first:
+    1). Data processing script that produces an input and output nested dictionary
+    2). batch_size, lr, lead names information at the top of run_experiments.py
+    3). classification # of classes, in prepare_miscellaneous.py, determine_classification_setting
+    4). data path etc., in load_raw_inputs_and_outputs.py
+    5). trials_to_run dictionary in run_experiments.py
+    6). retrieve_labelled_data in prepare_dataset.py, edit header to use self.class_pair rather than default
+    7). obtain_information in misc.py, edit to make it handle modalities setting correctly
