@@ -76,7 +76,7 @@ class my_dataset_contrastive(Dataset):
     
                 frame_array.append(modality_input)
                 label_array.append(modality_output)
-                
+            print(frame_array) 
             self.input_array = np.concatenate(frame_array)
             self.label_array = [i for i in range(len(modalities)) for _ in range(modality_input.shape[0])] 
         
