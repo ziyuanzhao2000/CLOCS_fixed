@@ -6,3 +6,4 @@
     5). trials_to_run dictionary in run_experiments.py
     6). retrieve_labelled_data in prepare_dataset.py, edit header to use self.class_pair rather than default
     7). obtain_information in misc.py, edit to make it handle modalities setting correctly
+    8). change window_len at the top of prepare_dataset.py

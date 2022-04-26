@@ -17,6 +17,8 @@ import random
 #import pandas as pd
 #%%
 
+window_len = 178
+
 class my_dataset_contrastive(Dataset):
     """ Takes Arrays and Phase, and Returns Sample 
         i.e. use for BIDMC and PhysioNet Datasets 
@@ -514,7 +516,7 @@ class my_dataset_contrastive(Dataset):
                     variance_factor = 10*mult_factor
                 elif self.dataset_name in ['physionet','physionet2017']:
                     variance_factor = 100*mult_factor 
-                gauss_noise = np.random.normal(0,variance_factor,size=(2500))
+                gauss_noise = np.random.normal(0,variance_factor,size=(window_len))
                 frame = frame + gauss_noise
             
             if 'FlipAlongY' in self.perturbation:
@@ -550,21 +552,21 @@ class my_dataset_contrastive(Dataset):
             frame = torch.tensor(input_frame,dtype=torch.float)
             label = torch.tensor(label,dtype=torch.float)
             frame = frame.unsqueeze(0) #(1,5000)
-            frame_views = torch.empty(1,2500,self.nviews)
+            frame_views = torch.empty(1,window_len,self.nviews)
             start = 0
             for n in range(self.nviews):
-                current_view = frame[0,start:start+2500]
+                current_view = frame[0,start:start+window_len]
                 current_view = self.obtain_perturbed_frame(current_view)
                 current_view = self.normalize_frame(current_view)
                 frame_views[0,:,n] = current_view
-                start += 2500
+                start += window_len
             """ End My Approach Patient Specific """
             
         elif self.trial == 'CMLC': #contrastive multi-lead coding (OURS2)
             frame = torch.tensor(input_frame,dtype=torch.float)
             label = torch.tensor(label,dtype=torch.float)
             frame = frame.unsqueeze(0) #(1,2500,12) #SxL = Samples x leads
-            frame_views = torch.empty(1,2500,self.nviews)#self.nviews) #nviews = nleads in this case (1x2500x12)
+            frame_views = torch.empty(1,window_len,self.nviews)#self.nviews) #nviews = nleads in this case (1x2500x12)
             start = 0
             for n in range(self.nviews): #nviews = # of leads
                 current_view = frame[0,:,n]
@@ -576,13 +578,13 @@ class my_dataset_contrastive(Dataset):
             frame = torch.tensor(input_frame,dtype=torch.float)
             label = torch.tensor(label,dtype=torch.float)
             frame = frame.unsqueeze(0) #(1,5000,12) #SxL = Samples x Leads
-            frame_views = torch.empty(1,2500,self.nviews*2)#self.nviews) #nviews = nleads in this case (1x2500x12*nsegments)
-            nsegments = frame.shape[1]//2500
+            frame_views = torch.empty(1,window_len,self.nviews*2)#self.nviews) #nviews = nleads in this case (1x2500x12*nsegments)
+            nsegments = frame.shape[1]//window_len
             fcount = 0
             for n in range(self.nviews): #nviews = # of leads
                 for s in range(nsegments):
-                    start = s*2500
-                    current_view = frame[0,start:start+2500,n]
+                    start = s*window_len
+                    current_view = frame[0,start:start+window_len,n]
                     current_view = self.obtain_perturbed_frame(current_view)
                     current_view = self.normalize_frame(current_view)
                     frame_views[0,:,fcount] = current_view  
