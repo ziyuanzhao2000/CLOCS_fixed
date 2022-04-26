@@ -76,7 +76,7 @@ class my_dataset_contrastive(Dataset):
     
                 frame_array.append(modality_input)
                 label_array.append(modality_output)
-            print(frame_array) 
+
             self.input_array = np.concatenate(frame_array)
             self.label_array = [i for i in range(len(modalities)) for _ in range(modality_input.shape[0])] 
         
@@ -305,7 +305,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
         #if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or (self.cl_scenario == 'Task-IL' and self.dataset_name == 'chapman'):        
-        if dataset_name in ['chapman', 'emg']:
+        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy']:
             for modality in self.modalities:
                 modality_input = input_array[modality][fraction][phase][self.class_pair]
                 modality_output = output_array[modality][fraction][phase][self.class_pair]
@@ -404,14 +404,7 @@ class my_dataset_contrastive(Dataset):
         inputs = np.concatenate(frame_array)
         outputs = np.concatenate(label_array)
         pids = np.concatenate(pids)
-        print(inputs.shape, outputs.shape, pids.shape)
-        print(outputs)
-        print(inputs[0], outputs[0], pids[0])
-#         exit(1)
         inputs,outputs,pids,_ = self.shrink_data(inputs,outputs,pids,labelled_fraction)
-        print(inputs.shape, outputs.shape, pids.shape)
-        print(outputs)
-        print(inputs[0], outputs[0], pids[0])
         return inputs,outputs,pids
 
     def acquire_unlabelled_samples(self,inputs,outputs,fraction,unlabelled_fraction,acquired_indices):
