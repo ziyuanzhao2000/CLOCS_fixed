@@ -71,17 +71,6 @@ def contrastive_single(phase,inference,dataloaders,model,optimizer,device,weight
         pids_list.append(pids)
         batch_num += 1
 
-    # report metrics
-    target = np.array(labels_list)
-    pred = np.array(outputs_list)
-    acc = sklearn.metrics.accuracy_score(target, pred)
-    precision = sklearn.metrics.precision_score(target, pred, average='macro')
-    recall = sklearn.metrics.recall_score(target, pred, average='macro')
-    f1 = sklearn.metrics.f1_score(target, pred, average='macro')
-    auroc = sklearn.metrics.roc_auc_score(target, pred)
-    auprc = sklearn.metrics.average_precision_score(target, pred)
-    print(f'acc {acc}, precision {precision}, recall {recall}, f1 {f1}, auroc {auroc}, auprc {auprc}')
-
     outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list = flatten_arrays(outputs_list,labels_list,modality_list,indices_list,task_names_list,pids_list)
     epoch_loss = running_loss / len(dataloaders[phase].dataset)
     return epoch_loss, outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list
@@ -145,6 +134,18 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
         batch_num += 1
     
     outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list = flatten_arrays(outputs_list,labels_list,modality_list,indices_list,task_names_list,pids_list)
+
+
+    # report metrics
+    target = np.array(labels_list)
+    pred = np.array(outputs_list)
+    acc = sklearn.metrics.accuracy_score(target, pred)
+    precision = sklearn.metrics.precision_score(target, pred, average='macro')
+    recall = sklearn.metrics.recall_score(target, pred, average='macro')
+    f1 = sklearn.metrics.f1_score(target, pred, average='macro')
+    auroc = sklearn.metrics.roc_auc_score(target, pred)
+    auprc = sklearn.metrics.average_precision_score(target, pred)
+    print(f'acc {acc}, precision {precision}, recall {recall}, f1 {f1}, auroc {auroc}, auprc {auprc}')
 
     epoch_loss = running_loss / len(dataloaders[phase].dataset)
     epoch_auroc = calculate_auc(classification,outputs_list,labels_list,save_path_dir)
