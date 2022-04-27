@@ -97,6 +97,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
         labels = labels.to(device)
         labels = change_labels_type(labels,criterion)
         with torch.set_grad_enabled('train1' in phase):# and inference == False): #('train' in phase and inference == False)
+            print(inputs.shape)
             outputs = model(inputs)
             if labels.shape[1] == 1 and len(outputs.shape) == 2:
                 labels = labels[:,0] # a hack!
