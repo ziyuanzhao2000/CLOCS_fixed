@@ -70,7 +70,7 @@ class cnn_network_contrastive(nn.Module):
             nn.Conv1d(c3,c4,k3,s3),
             nn.BatchNorm1d(c4),
             nn.ReLU(),
-            nn.MaxPool1d(2),
+            nn.MaxPool1d(4),
             self.dropout3
             ))
             self.view_linear_modules.append(nn.Linear(32,self.embedding_dim)) # c4*10
@@ -89,7 +89,6 @@ class cnn_network_contrastive(nn.Module):
         for n in range(nviews):       
             """ Obtain Inputs From Each View """
             h = x[:,:,:,n]
-            
             if self.trial == 'CMC':
                 h = self.view_modules[n](h) #nencoders = nviews
                 h = torch.reshape(h,(h.shape[0],h.shape[1]*h.shape[2]))
