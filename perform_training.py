@@ -100,8 +100,8 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
         with torch.set_grad_enabled('train1' in phase):# and inference == False): #('train' in phase and inference == False)
             #print(inputs.shape)
             outputs = model(inputs)
-#             if labels.shape[1] == 1 and len(outputs.shape) == 2:
-#                 labels = labels[:,0] # a hack!
+            if labels.shape[1] == 1 and len(outputs.shape) == 2:
+                labels = labels[:,0] # a hack!
             print(labels, labels.shape, outputs, outputs.shape, labels.ndim, outputs.ndim)
             loss = criterion(outputs,labels)
 
