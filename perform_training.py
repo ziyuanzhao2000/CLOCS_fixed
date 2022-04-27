@@ -103,7 +103,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
             outputs = model(inputs)
             if labels.shape[1] == 1 and len(outputs.shape) == 2:
                 labels = labels[:,0] # a hack!
-            print(labels, labels.shape, outputs, outputs.shape, labels.ndim, outputs.ndim)
+            #print(labels, labels.shape, outputs, outputs.shape, labels.ndim, outputs.ndim)
             loss = criterion(outputs,labels)
 
         """ Backpropagation and Update Step """
@@ -142,7 +142,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     target_prob = F.one_hot(target, num_classes=2)
     pred_prob = torch.tensor(outputs_list)
     pred = pred_prob.argmax(dim=1)
-    print(target_prob.shape, pred_prob.shape)
+    #print(target_prob.shape, pred_prob.shape)
     acc = sklearn.metrics.accuracy_score(target, pred)
     precision = sklearn.metrics.precision_score(target, pred, average='macro')
     recall = sklearn.metrics.recall_score(target, pred, average='macro')
