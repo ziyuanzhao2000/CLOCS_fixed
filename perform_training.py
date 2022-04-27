@@ -136,7 +136,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     
     outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list = flatten_arrays(outputs_list,labels_list,modality_list,indices_list,task_names_list,pids_list)
 
-    print(outputs_list, labels_list)
+#     print(outputs_list, labels_list)
     # report metrics
     target = torch.tensor(labels_list)
     target_prob = F.one_hot(target, num_classes=2)
@@ -150,10 +150,9 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     auroc = sklearn.metrics.roc_auc_score(target_prob, pred_prob, multi_class='ovr')
     auprc = sklearn.metrics.average_precision_score(target_prob, pred_prob)
     print(f'acc {acc}, precision {precision}, recall {recall}, f1 {f1}, auroc {auroc}, auprc {auprc}')
-    print(outputs_list)
     epoch_loss = running_loss / len(dataloaders[phase].dataset)
-    epoch_auroc = calculate_auc(classification,outputs_list,labels_list,save_path_dir)
-    return epoch_loss, epoch_auroc, outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list
+#     epoch_auroc = calculate_auc(classification,outputs_list,labels_list,save_path_dir)
+    return epoch_loss, 0, outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list
 
 def one_epoch_finetuning(weighted_sampling,phase,inference,dataloader,model,optimizer,device,criterion,classification,bptt_steps=0,epoch_count=None,new_task_epochs=None,trial=None,save_path_dir=None):
     epoch_loss, epoch_auroc, outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list = finetuning_single(phase,inference,dataloader,model,optimizer,device,weighted_sampling,criterion,classification,epoch_count=epoch_count,new_task_epochs=new_task_epochs,trial=trial,save_path_dir=save_path_dir)
