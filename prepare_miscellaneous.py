@@ -413,5 +413,5 @@ def obtain_criterion(classification):
 #     if classification == '2-way':
 #         criterion = nn.BCEWithLogitsLoss()
 #     else:
-        criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss()
     return criterion
