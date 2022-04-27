@@ -17,7 +17,7 @@ import random
 #import pandas as pd
 #%%
 
-window_len = 178 // 2
+window_len = 5120 // 2
 
 class my_dataset_contrastive(Dataset):
     """ Takes Arrays and Phase, and Returns Sample 
@@ -198,6 +198,14 @@ class my_dataset_contrastive(Dataset):
         elif dataset_name == 'epilepsy':
             leads = leads
             path = os.path.join(basepath,'epilepsy',self.task,'leads_%s' % leads)
+            extension = ''
+        elif dataset_name == 'pFD_A':
+            leads = leads
+            path = os.path.join(basepath,'pFD_A',self.task,'leads_%s' % leads)
+            extension = ''
+        elif dataset_name == 'pFD_B':
+            leads = leads
+            path = os.path.join(basepath,'pFD_B',self.task,'leads_%s' % leads)
             extension = ''
 
         if self.cl_scenario == 'Class-IL':
@@ -386,7 +394,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
 
-        if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy']:
+        if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B']:
             header = self.class_pair
         elif self.cl_scenario == 'Task-IL' and dataset_name == 'chapman':
             header = self.class_pair
