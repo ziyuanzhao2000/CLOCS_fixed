@@ -69,8 +69,8 @@ def obtain_noutputs(classification,dataset_name):
         noutputs = 9 #int(classification.split('-')[0])
     elif 'ptbxl' in dataset_name:
         noutputs = 12 #71
-    elif classification == '2-way':
-        noutputs = 1
+#     elif classification == '2-way':
+#         noutputs = 1
     else:
         noutputs = int(classification.split('-')[0])
     return noutputs
