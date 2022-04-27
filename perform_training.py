@@ -132,6 +132,8 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
         batch_num += 1
     
     outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list = flatten_arrays(outputs_list,labels_list,modality_list,indices_list,task_names_list,pids_list)
+    print(outputs_list[0].shape)
+    exit(1)
     epoch_loss = running_loss / len(dataloaders[phase].dataset)
     epoch_auroc = calculate_auc(classification,outputs_list,labels_list,save_path_dir)
     return epoch_loss, epoch_auroc, outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list
