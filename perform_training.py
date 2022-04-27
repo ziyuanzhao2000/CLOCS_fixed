@@ -150,7 +150,8 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     auroc = sklearn.metrics.roc_auc_score(target_prob, pred_prob, multi_class='ovr')
     auprc = sklearn.metrics.average_precision_score(target_prob, pred_prob)
     print(f'acc {acc}, precision {precision}, recall {recall}, f1 {f1}, auroc {auroc}, auprc {auprc}')
-    print(outputs_list, labels_list)
+    outputs_list = list(pred.numpy())
+    print(outputs_list)
     epoch_loss = running_loss / len(dataloaders[phase].dataset)
     epoch_auroc = calculate_auc(classification,outputs_list,labels_list,save_path_dir)
     return epoch_loss, epoch_auroc, outputs_list, labels_list, modality_list, indices_list, task_names_list, pids_list
