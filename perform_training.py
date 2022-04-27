@@ -147,7 +147,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     precision = sklearn.metrics.precision_score(target, pred, average='macro')
     recall = sklearn.metrics.recall_score(target, pred, average='macro')
     f1 = sklearn.metrics.f1_score(target, pred, average='macro')
-    auroc = sklearn.metrics.roc_auc_score(target_prob, pred_prob)
+    auroc = sklearn.metrics.roc_auc_score(target_prob, pred_prob, multi_class='ovr')
     auprc = sklearn.metrics.average_precision_score(target_prob, pred_prob)
     print(f'acc {acc}, precision {precision}, recall {recall}, f1 {f1}, auroc {auroc}, auprc {auprc}')
 
