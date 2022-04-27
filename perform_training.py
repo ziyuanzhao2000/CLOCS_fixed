@@ -11,6 +11,7 @@ from tqdm import tqdm
 from prepare_miscellaneous import obtain_contrastive_loss, flatten_arrays, calculate_auc, change_labels_type
 import sklearn
 import numpy as np
+import torch.nn.functional as F
 #%%
 """ Functions in this script:
     1) contrastive_single
@@ -138,14 +139,16 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
 
     # report metrics
     target = np.array(labels_list)
+    target_prob = F.one_hot(target, num_classes=model.n_classes)
     pred = np.array(outputs_list)
+    pred_prob = total_preds.argmax(dim=1)
     print(target, pred)
     acc = sklearn.metrics.accuracy_score(target, pred)
     precision = sklearn.metrics.precision_score(target, pred, average='macro')
     recall = sklearn.metrics.recall_score(target, pred, average='macro')
     f1 = sklearn.metrics.f1_score(target, pred, average='macro')
-    auroc = sklearn.metrics.roc_auc_score(target, pred)
-    auprc = sklearn.metrics.average_precision_score(target, pred)
+    auroc = sklearn.metrics.roc_auc_score(target_prob, pred_prob)
+    auprc = sklearn.metrics.average_precision_score(target_prob, pred_prob)
     print(f'acc {acc}, precision {precision}, recall {recall}, f1 {f1}, auroc {auroc}, auprc {auprc}')
 
     epoch_loss = running_loss / len(dataloaders[phase].dataset)
