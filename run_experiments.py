@@ -12,6 +12,8 @@ import numpy as np
 from prepare_miscellaneous import obtain_information, obtain_saved_weights_name, make_saving_directory_contrastive, modify_dataset_order_for_multi_task_learning, obtain_load_path_dir, determine_classification_setting
 from prepare_network import cnn_network_contrastive, second_cnn_network
 from run_experiment import train_model
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('running on', device)
 
 #%%
 
