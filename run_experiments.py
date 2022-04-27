@@ -158,10 +158,10 @@ basepath_to_data = f'{os.getcwd()}/data'
 
 phases = ['train','val','test']#['test'] #['train','val'] #['test']
 trial_to_load_list = ['CMSC'] #for loading pretrained weights, dropped SimCLR which is baseline
-trial_to_run_list =  ['CMSC'] #['Linear','Linear','Linear','Linear'] #['Fine-Tuning','Fine-Tuning','Fine-Tuning','Fine-Tuning'] #['Linear','Linear','Linear','Linear'] #['Fine-Tuning','Fine-Tuning','Fine-Tuning','Fine-Tuning'] #['Fine-Tuning','Fine-Tuning','Fine-Tuning','Fine-Tuning']  #['Linear','Linear','Linear','Linear']  #['Random']#,'Fine-Tuning','Fine-Tuning','Fine-Tuning']#['SimCLR','CMSC','CMLC','CMSMLC'] #current trial to run and perform training # Fine-Tuning | Same as trial_to_load
+trial_to_run_list =  ['Fine-Tuning'] #['Linear','Linear','Linear','Linear'] #['Fine-Tuning','Fine-Tuning','Fine-Tuning','Fine-Tuning'] #['Linear','Linear','Linear','Linear'] #['Fine-Tuning','Fine-Tuning','Fine-Tuning','Fine-Tuning'] #['Fine-Tuning','Fine-Tuning','Fine-Tuning','Fine-Tuning']  #['Linear','Linear','Linear','Linear']  #['Random']#,'Fine-Tuning','Fine-Tuning','Fine-Tuning']#['SimCLR','CMSC','CMLC','CMSMLC'] #current trial to run and perform training # Fine-Tuning | Same as trial_to_load
 embedding_dim_list = [320] #320,256,128,64,32
 downstream_dataset_list = ['sleepEDF']#,'physionet2020'] #dataset for pretraininng # 'chapman' | 'physionet2020'
-second_dataset_list = ['sleepEDF']#physionet2020'] #['physionet2020','cardiology','physionet2017','chapman']#,'physionet2020'] #only used for fine-tuning & linear trials #keep as list of empty strings if pretraining
+second_dataset_list = ['Epilepsy']#physionet2020'] #['physionet2020','cardiology','physionet2017','chapman']#,'physionet2020'] #only used for fine-tuning & linear trials #keep as list of empty strings if pretraining
 labelled_fraction_list = [1]#0.25,0.50,0.75,1.00] #proportion of labelled training data to train on # SHOULD BE 1 for pretraining #[0.25,0.50,0.75,1.00] for finetuning and linear evaluation
 
 if __name__ == '__main__':
