@@ -132,7 +132,7 @@ def run_configurations(basepath_to_data,phases,trial_to_load_list,trial_to_run_l
                         if second_dataset == "emg":
                             max_epochs = 20
                         else:
-                            max_epochs = 10 #hard stop for training
+                            max_epochs = 400 #hard stop for training
                         max_seed = 1
                         seeds = np.arange(max_seed)
                         for seed in seeds:
