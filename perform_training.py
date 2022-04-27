@@ -139,6 +139,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     # report metrics
     target = np.array(labels_list)
     pred = np.array(outputs_list)
+    print(target, pred)
     acc = sklearn.metrics.accuracy_score(target, pred)
     precision = sklearn.metrics.precision_score(target, pred, average='macro')
     recall = sklearn.metrics.recall_score(target, pred, average='macro')
