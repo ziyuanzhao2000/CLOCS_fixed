@@ -315,7 +315,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
         #if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or (self.cl_scenario == 'Task-IL' and self.dataset_name == 'chapman'):        
-        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy']:
+        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B']:
             for modality in self.modalities:
                 modality_input = input_array[modality][fraction][phase][self.class_pair]
                 modality_output = output_array[modality][fraction][phase][self.class_pair]
