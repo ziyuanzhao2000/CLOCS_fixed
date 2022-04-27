@@ -102,8 +102,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
             outputs = model(inputs)
             if labels.shape[1] == 1 and len(outputs.shape) == 2:
                 labels = labels[:,0] # a hack!
-            outputs = outputs[:, 0]
-            #print(labels, labels.shape, outputs, outputs.shape, labels.ndim, outputs.ndim)
+            print(labels, labels.shape, outputs, outputs.shape, labels.ndim, outputs.ndim)
             loss = criterion(outputs,labels)
 
         """ Backpropagation and Update Step """
