@@ -140,8 +140,8 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
     # report metrics
     target = torch.tensor(labels_list)
     target_prob = F.one_hot(target, num_classes=2)
-    pred = torch.tensor(outputs_list)
-    pred_prob = total_preds.argmax(dim=1)
+    pred_prob = torch.tensor(outputs_list)
+    pred = pred_prob.argmax(dim=1)
     print(target, pred)
     acc = sklearn.metrics.accuracy_score(target, pred)
     precision = sklearn.metrics.precision_score(target, pred, average='macro')
