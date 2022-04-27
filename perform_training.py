@@ -138,9 +138,9 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
 
 
     # report metrics
-    target = np.array(labels_list)
+    target = torch.tensor(labels_list)
     target_prob = F.one_hot(target, num_classes=2)
-    pred = np.array(outputs_list)
+    pred = torch.tensor(outputs_list)
     pred_prob = total_preds.argmax(dim=1)
     print(target, pred)
     acc = sklearn.metrics.accuracy_score(target, pred)
