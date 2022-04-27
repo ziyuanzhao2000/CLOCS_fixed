@@ -10,6 +10,7 @@ import torch
 from tqdm import tqdm
 from prepare_miscellaneous import obtain_contrastive_loss, flatten_arrays, calculate_auc, change_labels_type
 import sklearn
+import numpy as np
 #%%
 """ Functions in this script:
     1) contrastive_single
