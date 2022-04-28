@@ -17,7 +17,7 @@ import random
 #import pandas as pd
 #%%
 
-window_len = 5120 // 2
+window_len = 206 // 2
 
 class my_dataset_contrastive(Dataset):
     """ Takes Arrays and Phase, and Returns Sample 
@@ -207,6 +207,14 @@ class my_dataset_contrastive(Dataset):
             leads = leads
             path = os.path.join(basepath,'pFD_B',self.task,'leads_%s' % leads)
             extension = ''
+        elif dataset_name == 'HAR':
+            leads = leads
+            path = os.path.join(basepath,'HAR',self.task,'leads_%s' % leads)
+            extension = ''
+        elif dataset_name == 'AHAR':
+            leads = leads
+            path = os.path.join(basepath,'AHAR',self.task,'leads_%s' % leads)
+            extension = ''
 
         if self.cl_scenario == 'Class-IL':
             dataset_name = dataset_name + '_' + 'mutually_exclusive_classes'
@@ -315,7 +323,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
         #if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or (self.cl_scenario == 'Task-IL' and self.dataset_name == 'chapman'):        
-        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B']:
+        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B', 'HAR', 'AHAR']:
             for modality in self.modalities:
                 modality_input = input_array[modality][fraction][phase][self.class_pair]
                 modality_output = output_array[modality][fraction][phase][self.class_pair]
@@ -394,7 +402,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
 
-        if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B']:
+        if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B', 'HAR', 'AHAR']:
             header = self.class_pair
         elif self.cl_scenario == 'Task-IL' and dataset_name == 'chapman':
             header = self.class_pair

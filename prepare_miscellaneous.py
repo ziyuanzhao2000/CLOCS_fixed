@@ -263,6 +263,10 @@ def determine_classification_setting(dataset_name,trial):
         classification = '3-way'
     elif dataset_name == 'pFD_B':
         classification = '3-way'
+    elif dataset_name == 'HAR':
+        classification = '6-way'
+    elif dataset_name == 'AHAR':
+        classification = '2-way'
     else: #used for pretraining with contrastive learning
         classification = None
     #print('Original Classification %s' % classification)
@@ -408,7 +412,7 @@ def obtain_information(trial,downstream_dataset,second_dataset,data2leads_dict,d
         modalities = ['emg']
     elif second_dataset in ['sleepEDF', 'epilepsy']:
         modalities = ['eeg']
-    elif second_dataset in ['pFD_A', 'pFD_B']:
+    elif second_dataset in ['pFD_A', 'pFD_B','HAR','AHAR']:
         modalities = ['other']
     else:
         modalities = ['ecg']

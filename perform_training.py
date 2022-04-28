@@ -140,7 +140,7 @@ def finetuning_single(phase,inference,dataloaders,model,optimizer,device,weighte
 #     print(outputs_list, labels_list)
     # report metrics
     target = torch.tensor(labels_list)
-    target_prob = F.one_hot(target, num_classes=2)
+    target_prob = F.one_hot(target, num_classes=3)
     pred_prob = torch.tensor(outputs_list)
     pred = pred_prob.argmax(dim=1)
     print(target_prob.shape, pred_prob.shape)
