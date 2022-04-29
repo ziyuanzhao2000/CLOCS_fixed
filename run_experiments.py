@@ -132,8 +132,14 @@ def run_configurations(basepath_to_data,phases,trial_to_load_list,trial_to_run_l
 
                         if second_dataset == "emg":
                             max_epochs = 20
+                        elif second_dataset == "epilepsy":
+                             max_epochs = 400
+                        elif second_dataset == "pFD_B":
+                             max_epochs = 50
+                        elif second_dataset == "AHAR":
+                            max_epochs = 20
                         else:
-                            max_epochs = 400 #hard stop for training
+                             max_epochs = 500 #hard stop for training
                         max_seed = 1
                         seeds = np.arange(max_seed)
                         for seed in seeds:
