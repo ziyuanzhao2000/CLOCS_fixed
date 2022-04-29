@@ -24,9 +24,9 @@ c4 = 32 #32
 k1=7 #kernel size #7 for default
 k2=7
 k3=7
-s1=3 #stride #3 for default
-s2=3
-s3=3
+s1=2 #stride #3 for default
+s2=2
+s3=2
 #num_classes = 3
 
 class cnn_network_contrastive(nn.Module):
