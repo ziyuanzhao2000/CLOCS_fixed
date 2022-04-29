@@ -70,7 +70,7 @@ class cnn_network_contrastive(nn.Module):
             nn.Conv1d(c3,c4,k3,s3),
             nn.BatchNorm1d(c4),
             nn.ReLU(),
-            nn.MaxPool1d(4),
+            nn.MaxPool1d(2),
             self.dropout3
             ))
             self.view_linear_modules.append(nn.Linear(352,self.embedding_dim)) # c4*10
