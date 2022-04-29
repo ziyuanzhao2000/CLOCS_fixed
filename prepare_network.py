@@ -26,7 +26,7 @@ k2=4
 k3=4
 s1=2 #stride #3 for default, 2's for HAR
 s2=2
-s3=2
+s3=1
 #num_classes = 3
 
 class cnn_network_contrastive(nn.Module):
