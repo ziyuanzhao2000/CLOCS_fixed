@@ -21,10 +21,10 @@ c1 = 1 #b/c single time-series
 c2 = 4 #4
 c3 = 16 #16
 c4 = 32 #32
-k1=4 #kernel size #7 for default, 4's for HAR
+k1=4 #kernel size #7 for default, 4,4,4 for HAR
 k2=4
 k3=4
-s1=2 #stride #3 for default, 2's for HAR
+s1=2 #stride #3 for default, 2,2,1 for HAR
 s2=2
 s3=1
 #num_classes = 3
@@ -73,7 +73,7 @@ class cnn_network_contrastive(nn.Module):
             nn.MaxPool1d(2),
             self.dropout3
             ))
-            self.view_linear_modules.append(nn.Linear(352,self.embedding_dim)) # c4*10
+            self.view_linear_modules.append(nn.Linear(32,self.embedding_dim)) # c4*10, 32 for HAR
                         
     def forward(self,x):
         """ Forward Pass on Batch of Inputs 
