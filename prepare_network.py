@@ -73,7 +73,7 @@ class cnn_network_contrastive(nn.Module):
             nn.MaxPool1d(2),
             self.dropout3
             ))
-            self.view_linear_modules.append(nn.Linear(32,self.embedding_dim)) # c4*10, 32 for HAR
+            self.view_linear_modules.append(nn.Linear(672,self.embedding_dim)) # c4*10, 32 for HAR
                         
     def forward(self,x):
         """ Forward Pass on Batch of Inputs 
