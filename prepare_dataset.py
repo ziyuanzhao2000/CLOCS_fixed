@@ -17,7 +17,7 @@ import random
 #import pandas as pd
 #%%
 
-window_len = 206 // 2
+window_len = 1500 // 2
 
 class my_dataset_contrastive(Dataset):
     """ Takes Arrays and Phase, and Returns Sample 
@@ -156,7 +156,7 @@ class my_dataset_contrastive(Dataset):
             path = os.path.join(basepath,'CARDIOL_MAY_2017','patient_data',self.task,'%s_classes' % leads)
             extension = ''
         elif dataset_name == 'physionet2017':
-            path = os.path.join(basepath,'PhysioNet 2017','patient_data',self.task)
+            path = os.path.join(basepath,'physionet2017',self.task)
             extension = ''
         elif dataset_name == 'tetanus':
             path = '/media/scro3517/TertiaryHDD/new_tetanus_data/patient_data'
@@ -323,7 +323,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
         #if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or (self.cl_scenario == 'Task-IL' and self.dataset_name == 'chapman'):        
-        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B', 'HAR', 'AHAR']:
+        if dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B', 'HAR', 'AHAR', 'physionet2017']:
             for modality in self.modalities:
                 modality_input = input_array[modality][fraction][phase][self.class_pair]
                 modality_output = output_array[modality][fraction][phase][self.class_pair]
@@ -402,7 +402,7 @@ class my_dataset_contrastive(Dataset):
         label_array = []
         pids = []
 
-        if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B', 'HAR', 'AHAR']:
+        if self.cl_scenario == 'Class-IL' or self.cl_scenario == 'Time-IL' or dataset_name in ['chapman', 'emg', 'sleepEDF', 'epilepsy', 'pFD_A', 'pFD_B', 'HAR', 'AHAR', 'physionet2017']:
             header = self.class_pair
         elif self.cl_scenario == 'Task-IL' and dataset_name == 'chapman':
             header = self.class_pair
